@@ -1,0 +1,45 @@
+<odoo>
+  <data>
+
+      <record id="sale_order_history_wizard_form" model="ir.ui.view">
+        <field name="name">sale_order_history_wizard_form</field>
+        <field name="model">sale.order.history</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="order_line_id" invisible="1"/>
+                      <field name="history_line_ids" force_save="1" readonly="1">
+                        <tree editable="top">
+                            <field name="order_id"/>
+                            <field name="product_id" force_save="1" readonly="1"/>
+                            <field name="date"/>
+                            <field name="qty_order"/>
+                            <field name="unit_price"/>
+                        </tree>
+                    </field>
+                </group>
+            </form>
+        </field>
+    </record>
+
+        <record id="act_sale_order_history_wizard_form" model="ir.actions.act_window">
+        <field name="name">Product History</field>
+        <field name="res_model">sale.order.history</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+      <record id="view_order_form_inherit" model="ir.ui.view">
+        <field name="name">view.order.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook//page//field[@name='order_line']//tree//field[@name='price_subtotal']"
+                       position="after">
+                <button string="HIS" name="%(act_sale_order_history_wizard_form)d" type="action"  class="btn-primary"/>
+                </xpath>
+        </field>
+      </record>
+  </data>
+
+</odoo>
