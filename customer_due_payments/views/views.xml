@@ -26,10 +26,13 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='partner_id']"
-                       position="after">
-                <button  name="%(act_customer_due_payments_wizard_form)d" type="action"  class="btn-primary" icon="fa-plus-square"/>
-                </xpath>
+            <xpath expr="//group/group"  position="after">
+                <group>
+                    <button name="%(act_customer_due_payments_wizard_form)d" type="action"  class="oe_link oe_read_only pt-0" icon="fa-plus-square" />
+
+                </group>
+            </xpath>
+
         </field>
       </record>
   </data>
