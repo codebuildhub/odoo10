@@ -10,6 +10,10 @@
                     <field name="partner_id" invisible="1"/>
                     <field name="balance" readonly="1"/>
                 </group>
+                <footer>
+                        <button string="OK" class="btn-secondary" special="cancel" data-hotkey="z" />
+                </footer>
+
             </form>
         </field>
     </record>

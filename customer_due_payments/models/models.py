@@ -18,18 +18,21 @@ class CustomerDuePAyments(models.TransientModel):
     partner_id = fields.Many2one('res.partner')
     balance = fields.Float(string='Balance')
 
+
     @api.onchange('partner_id')
     def _onchange_partner_id(self):
         if self.partner_id:
-            total_amount_due = 0.0
-            amount_dues = self.env['account.invoice'].search(
+            total_out_balance= 0.0
+            total_in_balance= 0.0
+            total_out = self.env['account.invoice'].search(
                 [('partner_id', '=', self.partner_id.id), ('type', '=', 'out_invoice')])
-            for amount_due in amount_dues:
-                total_amount_due += amount_due.residual
-            self.balance = total_amount_due
-            amount_dues = self.env['account.invoice'].search(
+            if total_out:
+               total_out_balance = sum(total_out.mapped('residual'))
+            total_in = self.env['account.invoice'].search(
                 [('partner_id', '=', self.partner_id.id), ('type', '=', 'in_invoice')])
-            for amount_due in amount_dues:
-                total_amount_due += amount_due.residual
-            self.balance = total_amount_due
+            if total_in:
+                total_in_balance = sum(total_in.mapped('residual'))
+            self.balance = total_in_balance - total_out_balance
+
+
 

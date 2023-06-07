@@ -18,6 +18,10 @@
                         </tree>
                     </field>
                 </group>
+                <footer>
+                        <button string="OK" class="btn-secondary" special="cancel" data-hotkey="z" />
+                </footer>
+
             </form>
         </field>
     </record>
