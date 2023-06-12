@@ -33,7 +33,7 @@ class SaleOrderHistory(models.TransientModel):
     @api.onchange('order_line_id')
     def _onchange_order_line_id(self):
         if self.order_line_id:
-            product_order_lines = self.env['sale.order.line'].search([('product_id','=',self.order_line_id.product_id.id),('order_partner_id','=',self.order_line_id.order_partner_id.id)])
+            product_order_lines = self.env['sale.order.line'].search([('product_id','=',self.order_line_id.product_id.id)])
             if product_order_lines:
                 self.history_line_ids = [(0, 0, {
                     'order_id': line.order_id.id,
