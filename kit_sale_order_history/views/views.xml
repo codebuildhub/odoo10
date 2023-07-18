@@ -11,6 +11,7 @@
                       <field name="history_line_ids" force_save="1" readonly="1">
                         <tree editable="top">
                             <field name="order_id"/>
+                            <field name="customer_id"/>
                             <field name="product_id" force_save="1" readonly="1"/>
                             <field name="date"/>
                             <field name="qty_order"/>

@@ -7,6 +7,7 @@ class OrderHistoryLine(models.TransientModel):
     _name = 'order.history.line'
 
     order_id = fields.Many2one('sale.order',string='SO')
+    customer_id = fields.Many2one('res.partner', string="Customer")
     product_id = fields.Many2one('product.product',string='Product')
     date = fields.Datetime(string='Date')
     qty_order = fields.Float(string='QTY Ordered')
@@ -37,6 +38,7 @@ class SaleOrderHistory(models.TransientModel):
             if product_order_lines:
                 self.history_line_ids = [(0, 0, {
                     'order_id': line.order_id.id,
+                    'customer_id' : line.order_partner_id.id,
                     'product_id': line.product_id.id,
                     'date': line.order_id.date_order,
                     'qty_order': line.product_uom_qty,
