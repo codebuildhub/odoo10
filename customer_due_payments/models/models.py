@@ -21,18 +21,15 @@ class CustomerDuePAyments(models.TransientModel):
 
     @api.onchange('partner_id')
     def _onchange_partner_id(self):
+        t_debit = []
+        t_credit = []
         if self.partner_id:
-            total_out_balance= 0.0
-            total_in_balance= 0.0
-            total_out = self.env['account.invoice'].search(
-                [('partner_id', '=', self.partner_id.id), ('type', '=', 'out_invoice')])
-            if total_out:
-               total_out_balance = sum(total_out.mapped('residual'))
-            total_in = self.env['account.invoice'].search(
-                [('partner_id', '=', self.partner_id.id), ('type', '=', 'in_invoice')])
-            if total_in:
-                total_in_balance = sum(total_in.mapped('residual'))
-            self.balance = total_in_balance - total_out_balance
-
-
-
+            total_credit_lines = self.env['account.move.line'].search(
+                [('partner_id', '=', self.partner_id.id)])
+            for line in total_credit_lines:
+                if line.account_id.user_type_id.name == 'Receivable':
+                    if line.debit > 0:
+                        t_debit.append(line.debit)
+                    if line.credit > 0:
+                        t_credit.append(line.credit)
+            self.balance = sum(t_debit) -  sum(t_credit)
