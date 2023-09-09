@@ -16,6 +16,8 @@
                             <field name="date"/>
                             <field name="qty_order"/>
                             <field name="unit_price"/>
+                            <field name="discount"/>
+                            <field name="total_after_discount"/>
                         </tree>
                     </field>
                 </group>

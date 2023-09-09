@@ -13,6 +13,14 @@ class OrderHistoryLine(models.TransientModel):
     qty_order = fields.Float(string='QTY Ordered')
     unit_price = fields.Float(string='Unit Price')
     direct_id = fields.Many2one('sale.order.history')
+    discount = fields.Float(string='Discount')
+    total_after_discount = fields.Float(string='Total After Discount',compute='_get_total_after_discount')
+
+    @api.depends('discount','unit_price','qty_order')
+    def _get_total_after_discount(self):
+        for rec in self:
+                discount_val = ((rec.unit_price * rec.qty_order) * rec.discount) / 100
+                rec.total_after_discount = (rec.unit_price * rec.qty_order) - discount_val
 
 
 class SaleOrderHistory(models.TransientModel):
@@ -43,5 +51,6 @@ class SaleOrderHistory(models.TransientModel):
                     'date': line.order_id.date_order,
                     'qty_order': line.product_uom_qty,
                     'unit_price': line.price_unit,
+                    'discount': line.discount,
                 }) for line in product_order_lines if line != self.order_line_id]
 
